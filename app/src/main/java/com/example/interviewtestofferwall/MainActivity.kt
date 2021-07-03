@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var listOfId:ArrayList<String>
+    private var listOfId: ArrayList<String>? = null
     private var counter = -1
     lateinit var imageView:ImageView
     lateinit var webView: WebView
@@ -31,10 +31,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showNext() {
+    private fun showNext() {
+        if(listOfId == null) return
         counter++
-        if (counter >= listOfId.size) counter = 0
-        val id = listOfId[counter]
+        if (counter >= listOfId!!.size) counter = 0
+        val id = listOfId!![counter]
         when(NetworkLoader().getResourceById(id,"type")){
             "text"-> showText(id)
             "webview"-> showWebView(id)
