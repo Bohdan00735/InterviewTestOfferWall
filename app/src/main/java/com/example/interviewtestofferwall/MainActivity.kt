@@ -1,5 +1,6 @@
 package com.example.interviewtestofferwall
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var imageView:ImageView
     lateinit var webView: WebView
     lateinit var textView: TextView
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         imageView = findViewById(R.id.imageView)
         webView = findViewById(R.id.webView)
+        webView.settings.javaScriptEnabled = true
         textView = findViewById(R.id.textView)
         showNext()
 
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     private fun showImage(id: String) {
         hideAll()
         Picasso.with(applicationContext)
-            .load(NetworkLoader().getResourceById(id,"url"))
+            .load(NetworkLoader().getImageById(id))
             .placeholder(R.drawable.ic_baseline_landscape_24)
             .into(imageView)
         imageView.visibility = View.VISIBLE
@@ -60,13 +63,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun showWebView(id: String) {
         hideAll()
-        NetworkLoader().getResourceById(id,"url")?.let { webView.loadUrl(it) }
+        NetworkLoader().getWebById(id)?.let { webView.loadUrl(it) }
         webView.visibility = View.VISIBLE
     }
 
     private fun showText(id: String) {
         hideAll()
-        textView.text = NetworkLoader().getResourceById(id,"message")?: return
+        textView.text = NetworkLoader().getTextById(id)?: return
         textView.visibility = View.VISIBLE
     }
 
